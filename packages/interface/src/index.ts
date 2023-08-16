@@ -28,6 +28,7 @@ import type { StreamHandler, StreamHandlerOptions } from './stream-handler/index
 import type { Topology } from './topology/index.js'
 import type { Listener } from './transport/index.js'
 import type { Multiaddr } from '@multiformats/multiaddr'
+import type { ProgressEvent } from 'progress-events'
 
 /**
  * Used by the connection manager to sort addresses into order before dialling
@@ -108,7 +109,15 @@ export interface IdentifyResult {
  * Event names are `noun:verb` so the first part is the name of the object
  * being acted on and the second is the action.
  */
-export interface Libp2pEvents<T extends ServiceMap = ServiceMap> {
+export interface Libp2pEvents<
+  Services extends ServiceMap = ServiceMap,
+  FindPeerProgressEvents extends ProgressEvent = ProgressEvent,
+  GetClosestPeersProgressEvents extends ProgressEvent = ProgressEvent,
+  ProvideProgressEvents extends ProgressEvent = ProgressEvent,
+  FindProvidersProgressEvents extends ProgressEvent = ProgressEvent,
+  PutProgressEvents extends ProgressEvent = ProgressEvent,
+  GetProgressEvents extends ProgressEvent = ProgressEvent
+> {
   /**
    * This event is dispatched when a new network peer is discovered.
    *
@@ -235,7 +244,15 @@ export interface Libp2pEvents<T extends ServiceMap = ServiceMap> {
    * })
    * ```
    */
-  'start': CustomEvent<Libp2p<T>>
+  'start': CustomEvent<Libp2p<
+  Services,
+  FindPeerProgressEvents,
+  GetClosestPeersProgressEvents,
+  ProvideProgressEvents,
+  FindProvidersProgressEvents,
+  PutProgressEvents,
+  GetProgressEvents
+  >>
 
   /**
    * This event notifies listeners that the node has stopped
@@ -246,7 +263,15 @@ export interface Libp2pEvents<T extends ServiceMap = ServiceMap> {
    * })
    * ```
    */
-  'stop': CustomEvent<Libp2p<T>>
+  'stop': CustomEvent<Libp2p<
+  Services,
+  FindPeerProgressEvents,
+  GetClosestPeersProgressEvents,
+  ProvideProgressEvents,
+  FindProvidersProgressEvents,
+  PutProgressEvents,
+  GetProgressEvents
+  >>
 }
 
 /**
@@ -303,7 +328,23 @@ export interface PendingDial {
 /**
  * Libp2p nodes implement this interface.
  */
-export interface Libp2p<T extends ServiceMap = ServiceMap> extends Startable, EventEmitter<Libp2pEvents<T>> {
+export interface Libp2p<
+  Services extends ServiceMap = ServiceMap,
+  FindPeerProgressEvents extends ProgressEvent = ProgressEvent,
+  GetClosestPeersProgressEvents extends ProgressEvent = ProgressEvent,
+  ProvideProgressEvents extends ProgressEvent = ProgressEvent,
+  FindProvidersProgressEvents extends ProgressEvent = ProgressEvent,
+  PutProgressEvents extends ProgressEvent = ProgressEvent,
+  GetProgressEvents extends ProgressEvent = ProgressEvent
+> extends Startable, EventEmitter<Libp2pEvents<
+  Services,
+  FindPeerProgressEvents,
+  GetClosestPeersProgressEvents,
+  ProvideProgressEvents,
+  FindProvidersProgressEvents,
+  PutProgressEvents,
+  GetProgressEvents
+  >> {
   /**
    * The PeerId is a unique identifier for a node on the network.
    *
@@ -354,7 +395,7 @@ export interface Libp2p<T extends ServiceMap = ServiceMap> extends Startable, Ev
    * }
    * ```
    */
-  peerRouting: PeerRouting
+  peerRouting: PeerRouting<FindPeerProgressEvents, GetClosestPeersProgressEvents>
 
   /**
    * The content routing subsystem allows the user to find providers for content,
@@ -370,7 +411,7 @@ export interface Libp2p<T extends ServiceMap = ServiceMap> extends Startable, Ev
    * }
    * ```
    */
-  contentRouting: ContentRouting
+  contentRouting: ContentRouting<ProvideProgressEvents, FindProvidersProgressEvents, GetProgressEvents, PutProgressEvents>
 
   /**
    * The keychain contains the keys used by the current node, and can create new
@@ -597,7 +638,7 @@ export interface Libp2p<T extends ServiceMap = ServiceMap> extends Startable, Ev
   /**
    * A set of user defined services
    */
-  services: T
+  services: Services
 }
 
 /**
