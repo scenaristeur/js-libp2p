@@ -8,7 +8,7 @@
  *
  * ```typescript
  * import { createLibp2p } from 'libp2p'
- * import { autoNATService } from 'libp2p/autonat'
+ * import { autoNATService } from '@libp2p/autonat'
  *
  * const node = await createLibp2p({
  *   // ...other options
