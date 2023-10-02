@@ -1,4 +1,4 @@
-import { CodeError, codes } from '@libp2p/interface/errors'
+import { CodeError, codes, messages } from '@libp2p/interface/errors'
 import merge from 'it-merge'
 import { pipe } from 'it-pipe'
 import {
