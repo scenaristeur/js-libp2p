@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
-import { EventEmitter } from '@libp2p/interface/events'
 import { codes } from '@libp2p/interface/errors'
+import { EventEmitter } from '@libp2p/interface/events'
 import { start } from '@libp2p/interface/startable'
 import { mockConnection, mockDuplex, mockMultiaddrConnection } from '@libp2p/interface-compliance-tests/mocks'
 import { expect } from 'aegir/chai'

@@ -1,8 +1,8 @@
 /* eslint-env mocha */
 
 import { yamux } from '@chainsafe/libp2p-yamux'
-import { EventEmitter } from '@libp2p/interface/events'
 import { codes } from '@libp2p/interface/errors'
+import { EventEmitter } from '@libp2p/interface/events'
 import { mockConnectionGater, mockConnectionManager, mockMultiaddrConnPair, mockRegistrar, mockStream, mockMuxer } from '@libp2p/interface-compliance-tests/mocks'
 import { mplex } from '@libp2p/mplex'
 import { createEd25519PeerId } from '@libp2p/peer-id-factory'

@@ -1,5 +1,5 @@
-import { EventEmitter } from '@libp2p/interface/events'
 import { codes } from '@libp2p/interface/errors'
+import { EventEmitter } from '@libp2p/interface/events'
 import { logger } from '@libp2p/logger'
 import pRetry from 'p-retry'
 import {
